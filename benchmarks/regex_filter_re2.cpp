@@ -1,6 +1,7 @@
 #include "../src/parser/common.hpp"
 #include "../src/parser/include/database/database.hpp"
-#include "../src/regex/regex.hpp"
+// #include "../src/regex/regex.hpp"
+#include <re2/re2.h>
 
 #define PATTERN ".*regular.*"
 #define NFILES 7
@@ -9,7 +10,7 @@ void re2_regex_match_count(char** partial_strings, uint64_t partial_count, const
     re2::RE2 pattern(pattern_ptr);
     uint64_t total = 0;
     for (uint64_t i = 0; i < partial_count; i++) {
-        if (re2::RE2::FullMatch(partial_strings[i], pattern)) {
+        if (re2::RE2::FullMatch(string(partial_strings[i]), pattern)) {
             total++;
             result.push_back(partial_strings[i]);
         }
@@ -19,7 +20,7 @@ void re2_regex_match_count(char** partial_strings, uint64_t partial_count, const
 
 int main() {
     const char* db_files[] = {
-        "/Users/kaiwenzheng/Documents/RegDuck/db-files/tpch_lineitem_comment_sf1.db",
+        "/home/ubuntu/regex_files/tpch_lineitem_comment_sf1.db",
         "/Users/kaiwenzheng/Documents/RegDuck/db-files/tpch_lineitem_comment_sf2.db",
         "/Users/kaiwenzheng/Documents/RegDuck/db-files/tpch_lineitem_comment_sf3.db",
         "/Users/kaiwenzheng/Documents/RegDuck/db-files/tpch_lineitem_comment_sf4.db",

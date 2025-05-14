@@ -2,12 +2,9 @@ project('RegDuck', 'c', 'cpp',
   default_options: ['warning_level=1', 'optimization=0']
 )
 
-# # Find re2 dependency
-# regex_dep = dependency('re2', required: false)
-# if not regex_dep.found()
-#   regex_sp = subproject('src/regex/re2_regex')
-#   regex_dep = regex_sp.get_variable('regex_dep')
-# endif
+inc_dir = include_directories('/usr/local/include')
+re2_dep = meson.get_compiler('cpp').find_library('re2', dirs: '/usr/local/lib', required: true)
+absl_dep = meson.get_compiler('cpp').find_library('absl', dirs: '/usr/local/lib', required: true)
 
 # # Find duckdb dependency
 # duckdb_lib = declare_dependency(
@@ -30,9 +27,7 @@ endif
 
 executable('run',
   cpp_args: ['-std=c++17'],
-  dependencies: [regex_dep],
-  sources: ['src/regex/duckdb_regex/regex.cpp',
-            'src/parser/include/decoder/decoder.cpp',
+  sources: ['src/parser/include/decoder/decoder.cpp',
             'src/parser/block/metadata_block.cpp',
             'src/parser/block/storage_block.cpp',
             'src/parser/statistics/base_statistics.cpp',
@@ -45,4 +40,6 @@ executable('run',
             'src/parser/header/database_header.cpp',
             'src/parser/database/database.cpp',
             'src/regduck_api.cpp',
-            which_main])
+            which_main],
+  include_directories: inc_dir,
+  dependencies: [re2_dep, absl_dep])

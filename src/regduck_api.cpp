@@ -1,6 +1,6 @@
 #include "regduck_api.hpp"
 
-#define DBFILE "/Users/kaiwenzheng/Documents/RegDuck/db-files/tpch_lineitem_comment_sf1.db"
+#define DBFILE "/home/ubuntu/regex_files/tpch_lineitem_comment_sf1.db"
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 Table* table = nullptr;
